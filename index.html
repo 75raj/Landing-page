@@ -102,6 +102,36 @@ ul.t li:before{content:"✓";position:absolute;left:0;font-weight:700;color:var(
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 @media(max-width:760px){.dc{width:100%}.blink{width:100%}}
 @media (prefers-reduced-motion:reduce){.dm,.blink,.arrow{animation:none}}
+.mm{display:none}
+.cc .amt.na{font-size:18px;padding-top:6px}
+@media(max-width:760px){
+ .pg{grid-template-columns:repeat(3,1fr)!important;gap:8px}
+ .pg .cc{padding:11px 8px;text-align:center;align-items:center}
+ .pg .cc .cn{flex-direction:column;gap:0}
+ .pg .cc h3{font-size:15px;line-height:1.15}
+ .pg .bd,.pg .dd{display:none}
+ .pg .mm{display:block;font-size:12px;line-height:1.3;min-height:31px}
+ .pg .cc .amt{font-size:21px;margin:6px 0 2px}
+ .pg .cc .amt.na{font-size:14px;padding-top:6px;line-height:1.5;margin:6px 0 2px}
+ .pg .cc p{margin-bottom:9px}
+ .pg .btn{width:100%;padding:9px 2px;font-size:13px;border-radius:9px}
+}
+.ov{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
+.ov[hidden]{display:none}
+.sheet{background:var(--surf);width:min(520px,100%);border-radius:20px 20px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px));max-height:88vh;overflow:auto}
+.oh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.oh h3{font-size:21px}
+.ox{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:17px;cursor:pointer}
+.os{margin-top:14px}
+.os>b{display:block;margin-bottom:8px;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:10px 15px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:600 15px Hind,sans-serif;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--dk);color:#fff;border-color:var(--lime)}
+.chip:focus-visible,.ox:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
+.sum{background:var(--soft);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-weight:600}
+.sheet .big{width:100%;padding:14px;font-size:17px}
+.sn{margin:8px 0 0;color:var(--mut);font-size:13.5px;text-align:center}
+@media(min-width:761px){.ov{align-items:center}.sheet{border-radius:20px}}
 /* faq */
 .faq details{background:var(--surf);border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
 .faq summary{cursor:pointer;padding:13px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px;font-size:15.5px}
@@ -224,12 +254,7 @@ footer{padding:30px 0 90px;color:var(--mut);font-size:14px}
     <a class="btn lime" target="_blank" rel="noopener" href="https://superprofile.bio/vp/1pFDblt3">Combo Kharidein ↗</a>
   </div>
 
-  <div class="g g3" id="plans"></div>
-
-  <div class="one">
-    <div><h3>Sirf ek subject chahiye?</h3><p>Kisi bhi class ka koi ek subject alag se lijiye.</p></div>
-    <a class="btn sec" target="_blank" rel="noopener" href="https://superprofile.bio/vp/R6Oam1VT?checkout=true">Any One Subject ↗</a>
-  </div>
+  <div class="g g3 pg" id="plans"></div>
   <div class="note">Ye Digital Study Material hai (PPT + PDF). Payment ke baad access milta hai. Koi dikkat ho to WhatsApp par support available hai.</div>
 </div></section>
 
@@ -266,6 +291,13 @@ footer{padding:30px 0 90px;color:var(--mut);font-size:14px}
 </div>
 <p style="margin-top:14px">Digital study material. Physical books ya printed notes nahi bheje jaate. Payment, download ya file kholne mein dikkat ho to WhatsApp 6200327781 par contact karein.</p></div></footer>
 
+<div class="ov" id="ov" hidden role="dialog" aria-modal="true" aria-labelledby="ovt"><div class="sheet">
+  <div class="oh"><h3 id="ovt">Apna subject chuniye</h3><button type="button" class="ox" id="ovx" aria-label="Band karein">✕</button></div>
+  <div class="os"><b>1. Class chuniye</b><div class="chips" id="c1"></div></div>
+  <div class="os" id="s2" hidden><b>2. Subject chuniye</b><div class="chips" id="c2"></div></div>
+  <div class="os" id="s3" hidden><div class="sum" id="sum"></div><a class="btn lime big" id="buy" target="_blank" rel="noopener" href="#">Buy Now ↗</a><p class="sn">Checkout page par bhi yahi subject chunein.</p></div>
+</div></div>
+
 <div class="sticky"><a href="#demo">Demo</a><a class="l" href="#pricing">Buy Now</a></div>
 
 <script>
@@ -273,11 +305,12 @@ footer{padding:30px 0 90px;color:var(--mut);font-size:14px}
 var REVIEWS=[];
 
 var PLANS=[
- {t:"Class 9th",b:"Complete",p:"₹149",d:"6 subjects: Theory + Objective + Tests",u:"https://superprofile.bio/vp/nJeD4kh0"},
- {t:"Class 10th",b:"All Subjects",p:"₹249",d:"6 subjects + PYQ (2009–2026) + Model Papers",u:"https://superprofile.bio/vp/class-10th-all-subj"},
- {t:"Class 11th",b:"Complete",p:"₹199",d:"Science: Maths, Physics, Chemistry, Biology",u:"https://superprofile.bio/vp/8AT3mXwN"},
- {t:"Class 12th",b:"Complete",p:"₹249",d:"6 subjects + Official Model Papers (2020–2026)",u:"https://superprofile.bio/vp/2GjKoOPl"},
- {t:"Class 12th Arts",b:"Arts Pack",p:"₹149",d:"12th Arts ke liye complete study material",u:"https://superprofile.bio/vp/hBBeqICX"}
+ {t:"Class 9th",b:"Complete",p:"₹149",d:"6 subjects: Theory + Objective + Tests",m:"6 subjects",u:"https://superprofile.bio/vp/nJeD4kh0"},
+ {t:"Class 10th",b:"All Subjects",p:"₹249",d:"6 subjects + PYQ (2009–2026) + Model Papers",m:"6 subjects + PYQ",u:"https://superprofile.bio/vp/class-10th-all-subj"},
+ {t:"Class 11th",b:"Complete",p:"₹199",d:"Science: Maths, Physics, Chemistry, Biology",m:"Science (4)",u:"https://superprofile.bio/vp/8AT3mXwN"},
+ {t:"Class 12th",b:"Complete",p:"₹249",d:"6 subjects + Official Model Papers (2020–2026)",m:"6 subjects + Papers",u:"https://superprofile.bio/vp/2GjKoOPl"},
+ {t:"12th Arts",b:"Arts Pack",p:"₹149",d:"12th Arts ke liye complete study material",m:"Arts pack",u:"https://superprofile.bio/vp/hBBeqICX"},
+ {t:"Any One Subject",b:"Sirf 1 subject",p:"Best Price",d:"Sirf ek subject chahiye? Kisi bhi class ka koi ek subject alag se lijiye.",m:"Koi bhi 1 subject",sel:1,u:"https://superprofile.bio/vp/R6Oam1VT?checkout=true"}
 ];
 var FAQ=[
  ["Kaun-kaun si classes available hain?","Class 9th se 12th tak ka Complete Study Material. 12th Arts ka alag pack aur 9th–12th ka combo pack bhi hai."],
@@ -296,7 +329,7 @@ var FAQ=[
 var aud=document.getElementById("aud");aud.addEventListener("error",function(){document.getElementById("au").style.display="none"});
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 document.getElementById("plans").innerHTML=PLANS.map(function(p){
- return '<div class="card cc"><div class="cn"><h3>'+esc(p.t)+'</h3><span class="bd">'+esc(p.b)+'</span></div><div class="amt">'+esc(p.p)+'</div><p>'+esc(p.d)+'</p><a class="btn pri" target="_blank" rel="noopener" href="'+p.u+'">Buy Now ↗</a></div>';
+ return '<div class="card cc"><div class="cn"><h3>'+esc(p.t)+'</h3><span class="bd">'+esc(p.b)+'</span></div><div class="amt'+(p.p.charAt(0)=="₹"?"":" na")+'">'+esc(p.p)+'</div><p><span class="dd">'+esc(p.d)+'</span><span class="mm">'+esc(p.m)+'</span></p>'+(p.sel?'<button type="button" class="btn lime" id="oneBtn">Select Karein</button>':'<a class="btn pri" target="_blank" rel="noopener" href="'+p.u+'">Buy Now ↗</a>')+'</div>';
 }).join("");
 document.getElementById("fq").innerHTML=FAQ.map(function(f){
  return '<details><summary>'+esc(f[0])+'</summary><div class="a">'+esc(f[1])+'</div></details>';
@@ -309,6 +342,22 @@ if(REVIEWS.length){
   return '<div class="card rev"><div class="st">'+"★".repeat(r.stars)+"☆".repeat(5-r.stars)+'</div><p style="margin:6px 0 0">'+esc(r.text)+'</p><b>'+esc(r.name)+'</b></div>';
  }).join("");
 }
+
+/* Any One Subject flow */
+var ONE_LINK="https://superprofile.bio/vp/R6Oam1VT?checkout=true";
+var SUBJECT_LINKS={}; /* optional: har subject ka alag link, jaise "10th|Maths":"https://..." */
+var SUBJ={"Class 9th":["Maths","Science","S.S.T.","Hindi","English","Sanskrit"],"Class 10th":["Maths","Hindi","English","Science","S.S.T.","Sanskrit"],"Class 11th":["Maths","Physics","Chemistry","Biology"],"Class 12th":["Physics","Chemistry","Biology","Maths","Hindi","English"]};
+var ov=document.getElementById("ov"),oneTrig=null,selC=null;
+function chips(el,list,cur,fn){el.innerHTML="";list.forEach(function(x){var b=document.createElement("button");b.type="button";b.className="chip";b.textContent=x;b.setAttribute("aria-pressed",x===cur?"true":"false");b.onclick=function(){fn(x)};el.appendChild(b)})}
+function pickClass(c){selC=c;chips(document.getElementById("c1"),Object.keys(SUBJ),c,pickClass);chips(document.getElementById("c2"),SUBJ[c],null,pickSub);document.getElementById("s2").hidden=false;document.getElementById("s3").hidden=true}
+function pickSub(sb){chips(document.getElementById("c2"),SUBJ[selC],sb,pickSub);document.getElementById("sum").textContent=selC+" · "+sb;document.getElementById("buy").href=SUBJECT_LINKS[selC.replace("Class ","")+"|"+sb]||ONE_LINK;document.getElementById("s3").hidden=false;document.getElementById("s3").scrollIntoView({block:"nearest",behavior:"smooth"})}
+function openOne(){selC=null;chips(document.getElementById("c1"),Object.keys(SUBJ),null,pickClass);document.getElementById("s2").hidden=true;document.getElementById("s3").hidden=true;ov.hidden=false;document.body.style.overflow="hidden";document.getElementById("ovx").focus()}
+function closeOne(){ov.hidden=true;document.body.style.overflow="";if(oneTrig)oneTrig.focus()}
+oneTrig=document.getElementById("oneBtn");
+if(oneTrig)oneTrig.onclick=openOne;
+document.getElementById("ovx").onclick=closeOne;
+ov.addEventListener("click",function(e){if(e.target===ov)closeOne()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!ov.hidden)closeOne()});
 </script>
 </body>
 </html>
